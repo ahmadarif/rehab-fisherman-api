@@ -19,7 +19,6 @@ Route.get('/', ({ request }) => {
   return { greeting: 'Hello world in JSON' }
 })
 
-Route.post('api', async ({ request, response }) => {
-  const username = request.input('username') || 'anonimous'
-  response.send({ message: `Hello ${username}` })
-})
+Route.post('login', 'HistoryController.login')
+Route.get('history', 'HistoryController.getHistories')
+Route.post('history', 'HistoryController.addHistory')
