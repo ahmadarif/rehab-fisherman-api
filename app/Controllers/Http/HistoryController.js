@@ -1,6 +1,7 @@
 'use strict'
 
 const History = use('App/Models/History')
+const Env = use('Env')
 
 class HistoryController {
   async login ({ request, response }) {
@@ -14,8 +15,17 @@ class HistoryController {
 
   async getHistories ({ response, request }) {
     const { username, hand } = request.all()
-    const data = await History.query().where('username', username).where('hand', hand).fetch()
-    response.send(data)
+    const count = (await History.query().where('username', username).where('hand', hand).count())[0]['count(*)']
+    const limit = Env.get('LIMIT')
+    const offset = count - limit < 0 ? 0 : count - limit
+
+    const data = await History.query()
+      .where('username', username)
+      .where('hand', hand)
+      .offset(offset)
+      .limit(limit)
+      .fetch()
+    response.send({ data })
   }
 
   async addHistory ({ request, response }) {
