@@ -19,6 +19,5 @@ Route.get('/', ({ request }) => {
   return { greeting: 'Hello world in JSON' }
 })
 
-Route.post('login', 'HistoryController.login')
 Route.get('history', 'HistoryController.getHistories')
 Route.post('history', 'HistoryController.addHistory')
