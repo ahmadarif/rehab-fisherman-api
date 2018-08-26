@@ -21,3 +21,18 @@ Route.get('/', ({ request }) => {
 
 Route.get('history', 'HistoryController.getHistories')
 Route.post('history', 'HistoryController.addHistory')
+
+Route.get('tes', async ({ request, response }) => {
+  const History = use('App/Models/History')
+
+  const username = request.input('username')
+  const hand = request.input('hand') || 'right'
+
+  const actuals = await History.query().where('username', username).where('hand', hand).orderBy('id').pluck('actual')
+  const predictions = await History.query().where('username', username).where('hand', hand).orderBy('id').pluck('prediction')
+
+  response.send({
+    actuals: actuals,
+    predictions: predictions
+  })
+})
